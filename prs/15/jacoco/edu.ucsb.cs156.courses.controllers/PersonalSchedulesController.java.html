@@ -81,7 +81,7 @@ import org.springframework.web.bind.annotation.RestController;
   @PostMapping(&quot;/post&quot;)
   public PersonalSchedule postSchedule(
       @Parameter(name = &quot;name&quot;) @RequestParam String name,
-      @Parameter(name = &quot;description&quot;) @RequestParam(required = false) Optional&lt;String&gt; description,
+      @Parameter(name = &quot;description&quot;) Optional&lt;String&gt; description,
       @Parameter(name = &quot;quarter&quot;) @RequestParam String quarter) {
 <span class="fc" id="L86">    CurrentUser currentUser = getCurrentUser();</span>
 <span class="fc" id="L87">    log.info(&quot;currentUser={}&quot;, currentUser);</span>
