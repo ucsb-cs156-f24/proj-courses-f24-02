@@ -110,41 +110,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import OurTable, {
-  PlaintextColumn,
   DateColumn,
+  CustomComponentColumn,
 } from "main/components/OurTable";
 
 export default function JobsTable({ jobs }) {
   const testid = "JobsTable";
 
   const formatLog = (log, jobId) => {
-    console.log(`Debug: Job ID ${jobId}, Log:`, log);
-    const logText = typeof log === "string" ? log : "";
+    const logText = typeof log === "string" ? log : String(log);
     const lines = logText.split("\n");
-    console.log(`Debug: Job ID ${jobId}, Lines Length:`, lines.length); // Log line count
 
-  
     if (lines.length <= 10) {
-      console.log(`Debug: Job ID ${jobId} has <= 10 lines`);
-      return lines.join("\n") || "No log available";
+      return <pre>{lines.join("\n")}</pre>;
     } else {
-      console.log(`Debug: Job ID ${jobId} has > 10 lines`);
       const firstTenLines = lines.slice(0, 10).join("\n");
       return (
-        <>
-          {firstTenLines}
-          <br />
+        <div>
+          <pre>{firstTenLines}</pre>
           <span>...</span>
           <br />
           <Link to={`/admin/jobs/logs/${jobId}`} data-testid={`JobsTable-log-link-${jobId}`}>
             [See entire log]
           </Link>
-        </>
+        </div>
       );
     }
   };
-  
-  
 
   const columns = [
     {
@@ -157,7 +149,9 @@ export default function JobsTable({ jobs }) {
       Header: "Status",
       accessor: "status",
     },
-    PlaintextColumn("Log", (cell) => formatLog(cell.row.original.log, cell.row.original.id)),
+    CustomComponentColumn("Log", (cell) =>
+      formatLog(cell.row.original.log, cell.row.original.id)
+    ),
   ];
 
   const sortees = React.useMemo(
@@ -167,7 +161,7 @@ export default function JobsTable({ jobs }) {
         desc: true,
       },
     ],
-    [],
+    []
   );
 
   return (

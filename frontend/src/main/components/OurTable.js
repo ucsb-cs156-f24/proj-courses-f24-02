@@ -445,3 +445,11 @@ export function DateColumn(label, getDate) {
     },
   };
 }
+
+export function CustomComponentColumn(label, renderComponent) {
+  return {
+    Header: label,
+    id: label,
+    Cell: ({ cell }) => renderComponent(cell),
+  };
+}
