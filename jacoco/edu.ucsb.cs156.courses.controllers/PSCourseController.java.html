@@ -143,7 +143,7 @@ import org.springframework.web.bind.annotation.RestController;
     }
 
 <span class="fc bfc" id="L145" title="All 2 branches covered.">    if (coursesRepository.findByPsIdAndEnrollCd(psId, enrollCdPrimary).isPresent()) {</span>
-<span class="fc" id="L146">      throw new IllegalArgumentException(&quot;class exists in schedule&quot;);</span>
+<span class="fc" id="L146">      throw new IllegalArgumentException(&quot;You already have a section of this course on your personal schedule; to add this one instead, drop the other one first.&quot;);</span>
     }
 
 <span class="fc" id="L149">    ArrayList&lt;PSCourse&gt; savedCourses = new ArrayList&lt;&gt;();</span>
