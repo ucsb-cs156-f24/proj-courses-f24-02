@@ -127,11 +127,12 @@ export default function AppNavbar({
                     Load Subjects
                   </NavDropdown.Item>
                   <NavDropdown.Item
-                    href="/admin/jobs"
+                    as={Link}
+                    to="/admin/jobs"
                     data-testid="appnavbar-admin-jobs"
                   >
                     Manage Jobs
-                  </NavDropdown.Item>
+                </NavDropdown.Item>
                   <NavDropdown.Item
                     href="/developer"
                     data-testid="appnavbar-developer"

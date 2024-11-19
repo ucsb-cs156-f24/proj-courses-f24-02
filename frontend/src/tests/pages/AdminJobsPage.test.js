@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, act, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import axios from "axios";
@@ -6,7 +6,9 @@ import AxiosMockAdapter from "axios-mock-adapter";
 import { allTheSubjects } from "fixtures/subjectFixtures";
 import userEvent from "@testing-library/user-event";
 
-import AdminJobsPage from "main/pages/Admin/AdminJobsPage";
+import JobsTable from "main/components/Jobs/JobsTable";
+import JobLogPage from "main/components/Jobs/JobsTable";
+import AdminJobsPage from "main/pages/Admin/JobLogPage";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import jobsFixtures from "fixtures/jobsFixtures";
@@ -81,6 +83,10 @@ describe("AdminJobsPage tests", () => {
     expect(testJobButton).toBeInTheDocument();
     testJobButton.click();
 
+    await act(async () => {
+      testJobButton.click();
+    });  
+
     expect(await screen.findByTestId("TestJobForm-fail")).toBeInTheDocument();
 
     const sleepMsInput = screen.getByTestId("TestJobForm-sleepMs");
@@ -91,6 +97,11 @@ describe("AdminJobsPage tests", () => {
 
     fireEvent.change(sleepMsInput, { target: { value: "0" } });
     submitButton.click();
+
+    await act(async () => {
+      submitButton.click();
+    });
+  
 
     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
 
@@ -255,4 +266,64 @@ describe("AdminJobsPage tests", () => {
     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
     expect(axiosMock.history.post[0].url).toBe(url);
   });
+
+  // test("navigates to job log page on See entire log link click", async () => {
+  //   const jobs = [
+  //     {
+  //       id: "1",
+  //       log: Array(12).fill("Line").join("\n"), // 12 lines to trigger truncation
+  //       createdAt: "2022-11-13",
+  //       updatedAt: "2022-11-13",
+  //       status: "complete",
+  //     },
+  //   ];
+  
+  //   render(
+  //     <QueryClientProvider client={queryClient}>
+  //       <MemoryRouter>
+  //         <AdminJobsPage />
+  //       </MemoryRouter>
+  //     </QueryClientProvider>
+  //   );
+  
+  //   const link = await screen.findByText("[See entire log]");
+  //   expect(link).toBeInTheDocument();
+  
+  //   fireEvent.click(link);
+  
+  //   await waitFor(() => expect(screen.getByText("Job Log: 1")).toBeInTheDocument());
+  // });
+
+  test("navigates to job log page on See entire log link click", async () => {
+    const jobs = [
+      {
+        id: "1",
+        log: Array(12).fill("Line").join("\n"), // 12 lines to trigger truncation
+        createdAt: "2022-11-13",
+        updatedAt: "2022-11-13",
+        status: "complete",
+      },
+    ];
+  
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <JobsTable jobs={jobs} />
+        </MemoryRouter>
+      </QueryClientProvider>
+    );
+  
+    const link = await screen.findByText("[See entire log]");
+    expect(link).toBeInTheDocument();
+  
+    fireEvent.click(link);
+  
+    await waitFor(() => {
+      const jobLogHeading = screen.getByText("Job Log: 1");
+      expect(jobLogHeading).toBeInTheDocument();
+    });
+  });
+  
+  
+  
 });
