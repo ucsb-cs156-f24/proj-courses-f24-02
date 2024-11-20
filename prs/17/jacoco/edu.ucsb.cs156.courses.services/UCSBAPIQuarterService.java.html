@@ -160,9 +160,15 @@ public class UCSBAPIQuarterService {
 
   public List&lt;String&gt; getActiveQuarters() throws Exception {
 <span class="fc" id="L162">    List&lt;String&gt; activeQuarters = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L163">    Quarter.quarterList(getCurrentQuarterYYYYQ(), getEndQtrYYYYQ())</span>
-<span class="fc" id="L164">        .forEach(quarter -&gt; activeQuarters.add(quarter.getYYYYQ()));</span>
-<span class="fc" id="L165">    return activeQuarters;</span>
+<span class="fc" id="L163">    String currQtr = getCurrentQuarterYYYYQ();</span>
+<span class="fc" id="L164">    String endQtr = getEndQtrYYYYQ();</span>
+
+<span class="fc bfc" id="L166" title="All 2 branches covered.">    if (currQtr.compareTo(endQtr) &lt;= 0) {</span>
+<span class="fc" id="L167">      Quarter.quarterList(currQtr, endQtr)</span>
+<span class="fc" id="L168">          .forEach(quarter -&gt; activeQuarters.add(quarter.getYYYYQ()));</span>
+    }
+
+<span class="fc" id="L171">    return activeQuarters;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
