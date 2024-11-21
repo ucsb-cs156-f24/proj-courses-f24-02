@@ -4,7 +4,7 @@ courses,edu.ucsb.cs156.courses.controllers,GradeHistoryController,0,18,0,0,0,5,0
 courses,edu.ucsb.cs156.courses.controllers,ApiController,0,33,0,0,0,10,0,6,0,6
 courses,edu.ucsb.cs156.courses.controllers,PersonalSectionsController,0,82,0,2,0,18,0,5,0,4
 courses,edu.ucsb.cs156.courses.controllers,UserInfoController,0,6,0,0,0,2,0,2,0,2
-courses,edu.ucsb.cs156.courses.controllers,PersonalSchedulesController,0,354,0,16,0,79,0,25,0,17
+courses,edu.ucsb.cs156.courses.controllers,PersonalSchedulesController,0,357,0,16,0,79,0,25,0,17
 courses,edu.ucsb.cs156.courses.controllers,UCSBCurriculumController,0,18,0,0,0,4,0,3,0,3
 courses,edu.ucsb.cs156.courses.controllers,CourseOverTimeBuildingController,0,24,0,0,0,6,0,2,0,2
 courses,edu.ucsb.cs156.courses.controllers,UCSBAPIQuarterController,0,21,0,0,0,6,0,5,0,5
@@ -25,7 +25,7 @@ courses,edu.ucsb.cs156.courses.documents,ConvertedSection,0,26,0,0,0,7,0,1,0,1
 courses,edu.ucsb.cs156.courses.documents,Instructor,0,3,0,0,0,1,0,1,0,1
 courses,edu.ucsb.cs156.courses.documents,Section,0,6,0,0,0,2,0,1,0,1
 courses,edu.ucsb.cs156.courses.jobs,TestJob,0,31,0,4,0,10,0,3,0,1
-courses,edu.ucsb.cs156.courses.jobs,UpdateCourseDataJob,0,191,0,12,0,48,0,10,0,4
+courses,edu.ucsb.cs156.courses.jobs,UpdateCourseDataJob,0,209,0,12,0,52,0,10,0,4
 courses,edu.ucsb.cs156.courses.jobs,UpdateCourseDataJobFactory,0,118,0,2,0,18,0,9,0,8
 courses,edu.ucsb.cs156.courses.jobs,UploadGradeDataJobFactory,0,11,0,0,0,2,0,2,0,2
 courses,edu.ucsb.cs156.courses.jobs,UploadGradeDataJob,0,127,0,8,0,34,0,7,0,3
