@@ -145,7 +145,6 @@
 //   return column;
 // }
 
-
 // import React from "react";
 // import { useSortBy, useTable } from "react-table";
 // import { Button, Table } from "react-bootstrap";
@@ -319,7 +318,7 @@ export default function OurTable({
           initialState: rest.initialState,
         }),
       },
-      useSortBy
+      useSortBy,
     );
 
   return (
@@ -329,7 +328,8 @@ export default function OurTable({
           <tr
             {...headerGroup.getHeaderGroupProps()}
             key={
-              headerGroup.id || headerGroup.headers.map((col) => col.id).join("-")
+              headerGroup.id ||
+              headerGroup.headers.map((col) => col.id).join("-")
             }
           >
             {headerGroup.headers.map((column) => (
@@ -348,26 +348,26 @@ export default function OurTable({
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-  {rows.map((row) => {
-    prepareRow(row);
-    return (
-      <tr
-        {...row.getRowProps()}
-        key={row.id || row.original.id || row.index} // Ensure a unique fallback key
-      >
-        {row.cells.map((cell) => (
-          <td
-            {...cell.getCellProps()}
-            key={cell.column.id}
-            data-testid={`${testid}-cell-row-${cell.row.index}-col-${cell.column.id}`}
-          >
-            {cell.render("Cell")}
-          </td>
-        ))}
-      </tr>
-    );
-  })}
-</tbody>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <tr
+              {...row.getRowProps()}
+              key={row.id || row.original.id || row.index} // Ensure a unique fallback key
+            >
+              {row.cells.map((cell) => (
+                <td
+                  {...cell.getCellProps()}
+                  key={cell.column.id}
+                  data-testid={`${testid}-cell-row-${cell.row.index}-col-${cell.column.id}`}
+                >
+                  {cell.render("Cell")}
+                </td>
+              ))}
+            </tr>
+          );
+        })}
+      </tbody>
     </Table>
   );
 }
@@ -439,7 +439,7 @@ export function DateColumn(label, getDate) {
     Cell: ({ cell }) => {
       const date = new Date(getDate(cell));
       const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
-        date
+        date,
       );
       return <>{formattedDate}</>;
     },

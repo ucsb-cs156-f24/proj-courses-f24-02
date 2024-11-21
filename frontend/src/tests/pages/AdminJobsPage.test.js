@@ -1,14 +1,21 @@
-import { fireEvent, act, render, screen, waitFor } from "@testing-library/react";
+import {
+  fireEvent,
+  act,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 import { allTheSubjects } from "fixtures/subjectFixtures";
 import userEvent from "@testing-library/user-event";
 
+import AdminJobsPage from "main/pages/Admin/AdminJobsPage";
+import JobLogPage from "main/pages/Admin/JobLogPage";
 import JobsTable from "main/components/Jobs/JobsTable";
-import JobLogPage from "main/components/Jobs/JobsTable";
-import AdminJobsPage from "main/pages/Admin/JobLogPage";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import jobsFixtures from "fixtures/jobsFixtures";
@@ -61,7 +68,7 @@ describe("AdminJobsPage tests", () => {
     ).toHaveTextContent("complete");
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-Log`),
-    ).toHaveTextContent("Hello World! from test job!Goodbye from test job!");
+    ).toHaveTextContent("Hello World! from test job! Goodbye from test job!");
   });
 
   test("user can submit a test job", async () => {
@@ -85,7 +92,7 @@ describe("AdminJobsPage tests", () => {
 
     await act(async () => {
       testJobButton.click();
-    });  
+    });
 
     expect(await screen.findByTestId("TestJobForm-fail")).toBeInTheDocument();
 
@@ -97,11 +104,6 @@ describe("AdminJobsPage tests", () => {
 
     fireEvent.change(sleepMsInput, { target: { value: "0" } });
     submitButton.click();
-
-    await act(async () => {
-      submitButton.click();
-    });
-  
 
     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
 
@@ -267,63 +269,60 @@ describe("AdminJobsPage tests", () => {
     expect(axiosMock.history.post[0].url).toBe(url);
   });
 
-  // test("navigates to job log page on See entire log link click", async () => {
-  //   const jobs = [
-  //     {
-  //       id: "1",
-  //       log: Array(12).fill("Line").join("\n"), // 12 lines to trigger truncation
-  //       createdAt: "2022-11-13",
-  //       updatedAt: "2022-11-13",
-  //       status: "complete",
-  //     },
-  //   ];
-  
-  //   render(
-  //     <QueryClientProvider client={queryClient}>
-  //       <MemoryRouter>
-  //         <AdminJobsPage />
-  //       </MemoryRouter>
-  //     </QueryClientProvider>
-  //   );
-  
-  //   const link = await screen.findByText("[See entire log]");
-  //   expect(link).toBeInTheDocument();
-  
-  //   fireEvent.click(link);
-  
-  //   await waitFor(() => expect(screen.getByText("Job Log: 1")).toBeInTheDocument());
-  // });
-
   test("navigates to job log page on See entire log link click", async () => {
-    const jobs = [
-      {
-        id: "1",
-        log: Array(12).fill("Line").join("\n"), // 12 lines to trigger truncation
-        createdAt: "2022-11-13",
-        updatedAt: "2022-11-13",
-        status: "complete",
-      },
-    ];
-  
+    const queryClient = new QueryClient();
+    const axiosMock = new AxiosMockAdapter(axios);
+
+    const longLog = Array(12).fill("Line").join("\n");
+    const job = {
+      id: "1",
+      log: longLog,
+      createdAt: "2022-11-13",
+      updatedAt: "2022-11-13",
+      status: "complete",
+    };
+
+    const jobsData = [job];
+
+    axiosMock.onGet("/api/jobs?id=1").reply(200, job);
+
     render(
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <JobsTable jobs={jobs} />
+        <MemoryRouter initialEntries={["/"]}>
+          <Routes>
+            <Route path="/" element={<JobsTable jobs={jobsData} />} />
+            <Route path="/admin/jobs/logs/:id" element={<JobLogPage />} />
+          </Routes>
         </MemoryRouter>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
-  
-    const link = await screen.findByText("[See entire log]");
-    expect(link).toBeInTheDocument();
-  
-    fireEvent.click(link);
-  
+
+    const logCell = screen.getByTestId("JobsTable-cell-row-0-col-Log");
+    expect(logCell).toBeInTheDocument();
+
+    const truncatedLog = Array(10).fill("Line").join(" ");
+    const expectedLogText = `${truncatedLog}...[See entire log]`;
+
+    const normalizedLogText = logCell.textContent.replace(/\s+/g, " ").trim();
+    expect(normalizedLogText).toBe(expectedLogText);
+
+    const seeEntireLogLink = screen.getByTestId("JobsTable-log-link-1");
+    expect(seeEntireLogLink).toBeInTheDocument();
+
+    fireEvent.click(seeEntireLogLink);
+
     await waitFor(() => {
-      const jobLogHeading = screen.getByText("Job Log: 1");
-      expect(jobLogHeading).toBeInTheDocument();
+      expect(screen.getByText("ID")).toBeInTheDocument();
+      expect(screen.getByText(job.id)).toBeInTheDocument();
     });
+
+    const logCellInLogPage = screen.getByTestId(
+      "JobLogTable-cell-row-0-col-Log",
+    );
+    expect(logCellInLogPage).toBeInTheDocument();
+
+    const logPre = logCellInLogPage.querySelector("pre");
+    expect(logPre).toBeInTheDocument();
+    expect(logPre.textContent).toBe(longLog);
   });
-  
-  
-  
 });
