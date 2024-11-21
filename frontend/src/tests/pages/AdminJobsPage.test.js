@@ -293,10 +293,7 @@ describe("AdminJobsPage tests", () => {
             <Route path="/" element={<JobsTable jobs={jobsData} />} />
             <Route path="/admin/jobs/logs/:id" element={<JobLogPage />} />
           </Routes>
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
-
+    
     const logCell = screen.getByTestId("JobsTable-cell-row-0-col-Log");
     expect(logCell).toBeInTheDocument();
 
@@ -324,5 +321,30 @@ describe("AdminJobsPage tests", () => {
     const logPre = logCellInLogPage.querySelector("pre");
     expect(logPre).toBeInTheDocument();
     expect(logPre.textContent).toBe(longLog);
+});
+
+  test("user can clear jobs", async () => {
+    const url = "/api/jobs/all";
+    axiosMock.onDelete(url).reply(200, {});
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AdminJobsPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+    expect(await screen.findByText("Clear Job Logs")).toBeInTheDocument();
+
+    const dropDownButton = screen.getByText("Clear Job Logs");
+    expect(dropDownButton).toBeInTheDocument();
+    dropDownButton.click();
+
+    const clearJobsButton = screen.getByTestId("clearJobsSubmit");
+    expect(clearJobsButton).toBeInTheDocument();
+    clearJobsButton.click();
+
+    await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
+    expect(axiosMock.history.delete[0].url).toBe(url);
   });
 });
