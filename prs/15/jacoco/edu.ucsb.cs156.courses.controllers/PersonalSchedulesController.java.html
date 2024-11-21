@@ -162,10 +162,17 @@ import org.springframework.web.bind.annotation.RestController;
 <span class="fc" id="L162">    personalschedule.setName(incomingSchedule.getName());</span>
 <span class="fc" id="L163">    personalschedule.setDescription(incomingSchedule.getDescription());</span>
 <span class="fc" id="L164">    personalschedule.setQuarter(incomingSchedule.getQuarter());</span>
+<span class="fc" id="L165">    Optional&lt;PersonalSchedule&gt; existCheck =</span>
+<span class="fc" id="L166">        personalscheduleRepository.findByUserAndNameAndQuarter(</span>
+<span class="fc" id="L167">            currentUser, personalschedule.getName(), personalschedule.getQuarter());</span>
 
-<span class="fc" id="L166">    personalscheduleRepository.save(personalschedule);</span>
+<span class="fc bfc" id="L169" title="All 4 branches covered.">    if (existCheck.isPresent() &amp;&amp; !(existCheck.get().getId() == id)) {</span>
+<span class="fc" id="L170">      throw new IllegalArgumentException(</span>
+          &quot;A personal schedule with that name already exists in that quarter&quot;);
+    }
+<span class="fc" id="L173">    personalscheduleRepository.save(personalschedule);</span>
 
-<span class="fc" id="L168">    return personalschedule;</span>
+<span class="fc" id="L175">    return personalschedule;</span>
   }
 
   @Operation(
@@ -176,18 +183,25 @@ import org.springframework.web.bind.annotation.RestController;
   public PersonalSchedule putScheduleById_admin(
       @Parameter(name = &quot;id&quot;) @RequestParam Long id,
       @RequestBody @Valid PersonalSchedule incomingSchedule) {
-<span class="fc" id="L179">    PersonalSchedule personalschedule =</span>
+<span class="fc" id="L186">    PersonalSchedule personalschedule =</span>
         personalscheduleRepository
-<span class="fc" id="L181">            .findById(id)</span>
-<span class="fc" id="L182">            .orElseThrow(() -&gt; new EntityNotFoundException(PersonalSchedule.class, id));</span>
+<span class="fc" id="L188">            .findById(id)</span>
+<span class="fc" id="L189">            .orElseThrow(() -&gt; new EntityNotFoundException(PersonalSchedule.class, id));</span>
 
-<span class="fc" id="L184">    personalschedule.setName(incomingSchedule.getName());</span>
-<span class="fc" id="L185">    personalschedule.setDescription(incomingSchedule.getDescription());</span>
-<span class="fc" id="L186">    personalschedule.setQuarter(incomingSchedule.getQuarter());</span>
+<span class="fc" id="L191">    personalschedule.setName(incomingSchedule.getName());</span>
+<span class="fc" id="L192">    personalschedule.setDescription(incomingSchedule.getDescription());</span>
+<span class="fc" id="L193">    personalschedule.setQuarter(incomingSchedule.getQuarter());</span>
+<span class="fc" id="L194">    Optional&lt;PersonalSchedule&gt; existCheck =</span>
+<span class="fc" id="L195">        personalscheduleRepository.findByUserAndNameAndQuarter(</span>
+<span class="fc" id="L196">            personalschedule.getUser(), personalschedule.getName(), personalschedule.getQuarter());</span>
 
-<span class="fc" id="L188">    personalscheduleRepository.save(personalschedule);</span>
+<span class="fc bfc" id="L198" title="All 4 branches covered.">    if (existCheck.isPresent() &amp;&amp; !(existCheck.get().getId() == id)) {</span>
+<span class="fc" id="L199">      throw new IllegalArgumentException(</span>
+          &quot;A personal schedule with that name already exists in that quarter&quot;);
+    }
+<span class="fc" id="L202">    personalscheduleRepository.save(personalschedule);</span>
 
-<span class="fc" id="L190">    return personalschedule;</span>
+<span class="fc" id="L204">    return personalschedule;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
