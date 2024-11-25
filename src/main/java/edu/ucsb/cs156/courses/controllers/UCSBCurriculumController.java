@@ -31,4 +31,14 @@ public class UCSBCurriculumController extends ApiController {
 
     return ResponseEntity.ok().body(body);
   }
+
+  @Operation(summary = "Get finals information for a given quarter and enroll code")
+  @GetMapping(value = "/finalsInfo", produces = "application/json")
+  public ResponseEntity<String> finalsInfo(
+      @RequestParam String quarterYYYYQ, @RequestParam String enrollCd) 
+      throws Exception {
+    
+    String body = ucsbCurriculumService.getFinalsInfo(quarterYYYYQ, enrollCd);
+    return ResponseEntity.ok().body(body);
+  }
 }
