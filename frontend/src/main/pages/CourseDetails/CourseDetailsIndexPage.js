@@ -6,7 +6,7 @@ import CourseDetailsTable from "main/components/CourseDetails/CourseDetailsTable
 import { yyyyqToQyy } from "main/utils/quarterUtilities";
 import CourseDescriptionTable from "main/components/Courses/CourseDescriptionTable";
 import GradeHistoryGraphs from "main/components/GradeHistory/GradeHistoryGraph";
-
+import FinalsInfoDisplay from "main/components/CourseDetails/FinalsInfoDisplay";
 export default function CourseDetailsIndexPage() {
   // Stryker disable next-line all : Can't test state because hook is internal
   let { qtr, enrollCode } = useParams();
@@ -53,6 +53,7 @@ export default function CourseDetailsIndexPage() {
       },
     },
   );
+  const()
 
   return (
     <BasicLayout>
