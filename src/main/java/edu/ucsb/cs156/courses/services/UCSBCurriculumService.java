@@ -256,9 +256,9 @@ public class UCSBCurriculumService {
 
     log.info("url=" + url);
 
-    String retVal = "";
-    MediaType contentType = null;
-    HttpStatus statusCode = null;
+    String retVal;
+    MediaType contentType;
+    HttpStatus statusCode;
 
     ResponseEntity<String> re = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
     contentType = re.getHeaders().getContentType();
