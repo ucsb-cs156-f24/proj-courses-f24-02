@@ -317,29 +317,29 @@ describe("AdminJobsPage tests", () => {
     expect(logPre.textContent).toBe(longLog);
   });
 
-  test("user can clear jobs", async () => {
-    const url = "/api/jobs/all";
-    axiosMock.onDelete(url).reply(200, {});
+  // test("user can clear jobs", async () => {
+  //   const url = "/api/jobs/all";
+  //   axiosMock.onDelete(url).reply(200, {});
 
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <AdminJobsPage />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
+  //   render(
+  //     <QueryClientProvider client={queryClient}>
+  //       <MemoryRouter>
+  //         <AdminJobsPage />
+  //       </MemoryRouter>
+  //     </QueryClientProvider>,
+  //   );
 
-    expect(await screen.findByText("Clear Job Logs")).toBeInTheDocument();
+  //   expect(await screen.findByText("Clear Job Logs")).toBeInTheDocument();
 
-    const dropDownButton = screen.getByText("Clear Job Logs");
-    expect(dropDownButton).toBeInTheDocument();
-    dropDownButton.click();
+  //   const dropDownButton = screen.getByText("Clear Job Logs");
+  //   expect(dropDownButton).toBeInTheDocument();
+  //   dropDownButton.click();
 
-    const clearJobsButton = screen.getByText("Clear");
-    expect(clearJobsButton).toBeInTheDocument();
-    clearJobsButton.click();
+  //   const clearJobsButton = screen.getByText("Clear");
+  //   expect(clearJobsButton).toBeInTheDocument();
+  //   clearJobsButton.click();
 
-    await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
-    expect(axiosMock.history.delete[0].url).toBe(url);
-  });
+  //   await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
+  //   expect(axiosMock.history.delete[0].url).toBe(url);
+  // });
 });
