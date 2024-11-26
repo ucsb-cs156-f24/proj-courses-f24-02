@@ -6,9 +6,18 @@ export default function Plaintext({ text }) {
   if (text == null) {
     return <pre data-testid="plaintext-empty"></pre>;
   }
-  const textToRender =
-    typeof text === "string" ? text : JSON.stringify(text, null, 2);
+
+  let textToRender;
+  try {
+    // Safely stringify if not already a string
+    textToRender =
+      typeof text === "string" ? text : JSON.stringify(text, null, 2);
+  } catch (error) {
+    textToRender = "[Unserializable Object]";
+  }
+
   const [firstLine, ...rest] = textToRender.split("\n");
+
   // Stryker disable StringLiteral
   return (
     <pre data-testid="plaintext">

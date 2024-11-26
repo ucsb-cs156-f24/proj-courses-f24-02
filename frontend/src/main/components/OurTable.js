@@ -9,12 +9,13 @@ export default function OurTable({
   testid = "testid",
   ...rest
 }) {
-  // this kills some mutation tests where incorrect values are passed
+  // Validate data
   if (
     !(Array.isArray(data) && data.every((value) => typeof value === "object"))
   ) {
     throw new Error("Invalid data value");
   }
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
       {
@@ -31,10 +32,17 @@ export default function OurTable({
     <Table {...getTableProps()} striped bordered hover>
       <thead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
+          <tr
+            {...headerGroup.getHeaderGroupProps()}
+            key={
+              headerGroup.id ||
+              headerGroup.headers.map((col) => col.id).join("-")
+            }
+          >
             {headerGroup.headers.map((column) => (
               <th
                 {...column.getHeaderProps(column.getSortByToggleProps())}
+                key={column.id}
                 data-testid={`${testid}-header-${column.id}`}
               >
                 {column.render("Header")}
@@ -50,17 +58,19 @@ export default function OurTable({
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell, _index) => {
-                return (
-                  <td
-                    {...cell.getCellProps()}
-                    data-testid={`${testid}-cell-row-${cell.row.index}-col-${cell.column.id}`}
-                  >
-                    {cell.render("Cell")}
-                  </td>
-                );
-              })}
+            <tr
+              {...row.getRowProps()}
+              key={row.id || row.original.id || row.index} // Ensure a unique fallback key
+            >
+              {row.cells.map((cell) => (
+                <td
+                  {...cell.getCellProps()}
+                  key={cell.column.id}
+                  data-testid={`${testid}-cell-row-${cell.row.index}-col-${cell.column.id}`}
+                >
+                  {cell.render("Cell")}
+                </td>
+              ))}
             </tr>
           );
         })}
@@ -112,12 +122,11 @@ export function ButtonColumn(label, variant, callback, testid) {
 }
 
 export function PlaintextColumn(label, getText) {
-  const column = {
+  return {
     Header: label,
     id: label,
     Cell: ({ cell }) => <Plaintext text={getText(cell)} />,
   };
-  return column;
 }
 
 export function DateColumn(label, getDate) {
@@ -131,7 +140,7 @@ export function DateColumn(label, getDate) {
     hour12: false,
     timeZone: "America/Los_Angeles",
   };
-  const column = {
+  return {
     Header: label,
     id: label,
     Cell: ({ cell }) => {
@@ -142,5 +151,12 @@ export function DateColumn(label, getDate) {
       return <>{formattedDate}</>;
     },
   };
-  return column;
+}
+
+export function CustomComponentColumn(label, renderComponent) {
+  return {
+    Header: label,
+    id: label,
+    Cell: ({ cell }) => renderComponent(cell),
+  };
 }

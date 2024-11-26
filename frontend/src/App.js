@@ -5,7 +5,7 @@ import AdminUsersPage from "main/pages/Admin/AdminUsersPage";
 import AdminUpdatesPage from "main/pages/Admin/AdminUpdatesPage";
 import AdminLoadSubjectsPage from "main/pages/Admin/AdminLoadSubjectsPage";
 import AdminJobsPage from "main/pages/Admin/AdminJobsPage";
-import DeveloperPage from "main/pages/DeveloperPage"; // route from /developer to DeveloperPage
+import JobLogPage from "main/pages/Admin/JobLogPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
@@ -24,6 +24,7 @@ import CourseOverTimeInstructorIndexPage from "main/pages/CourseOverTime/CourseO
 import CourseOverTimeBuildingsIndexPage from "main/pages/CourseOverTime/CourseOverTimeBuildingsIndexPage";
 
 import CourseDetailsIndexPage from "main/pages/CourseDetails/CourseDetailsIndexPage";
+
 function App() {
   const { data: currentUser } = useCurrentUser();
 
@@ -42,7 +43,7 @@ function App() {
               element={<AdminLoadSubjectsPage />}
             />
             <Route path="/admin/jobs" element={<AdminJobsPage />} />
-            <Route path="/developer" element={<DeveloperPage />} />
+            <Route path="/admin/jobs/logs/:id" element={<JobLogPage />} />
           </>
         )}
         {hasRole(currentUser, "ROLE_USER") && (
