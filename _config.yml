@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f24/proj-courses-f24-02
 owner: ucsb-cs156-f24
 repo_name: proj-courses-f24-02
-pull_requests: [{"author":{"id":"U_kgDOBt27wQ","is_bot":false,"login":"vedp3705","name":""},"headRefName":"BetterJobLogs-Issue-8-TestBranch","number":36,"title":"Better job logs issue 8 test branch","url":"https://github.com/ucsb-cs156-f24/proj-courses-f24-02/pull/36"},{"author":{"id":"U_kgDOBuPHZA","is_bot":false,"login":"leozhu0","name":""},"headRefName":"leozhu0-proj-issue-13","number":35,"title":"Implemented Backend Support for finalsInfo","url":"https://github.com/ucsb-cs156-f24/proj-courses-f24-02/pull/35"}]
+pull_requests: [{"author":{"id":"U_kgDOBt27wQ","is_bot":false,"login":"vedp3705","name":""},"headRefName":"JobLogPage-U-8","number":37,"title":"wip","url":"https://github.com/ucsb-cs156-f24/proj-courses-f24-02/pull/37"},{"author":{"id":"U_kgDOBuPHZA","is_bot":false,"login":"leozhu0","name":""},"headRefName":"leozhu0-proj-issue-13","number":35,"title":"Implemented Backend Support for finalsInfo","url":"https://github.com/ucsb-cs156-f24/proj-courses-f24-02/pull/35"}]
