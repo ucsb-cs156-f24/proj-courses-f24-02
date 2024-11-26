@@ -324,8 +324,8 @@ describe("AdminJobsPage tests", () => {
   });
 
   //test("user can clear jobs", async () => {
-    //const queryClient = new QueryClient();
-    //const axiosMock = new AxiosMockAdapter(axios);
+  //const queryClient = new QueryClient();
+  //const axiosMock = new AxiosMockAdapter(axios);
 
   test("user can clear jobs", async () => {
     const url = "/api/jobs/all";
