@@ -4,6 +4,7 @@ import JobsTable from "main/components/Jobs/JobsTable";
 import { useBackend } from "main/utils/useBackend";
 import Accordion from "react-bootstrap/Accordion";
 import TestJobForm from "main/components/Jobs/TestJobForm";
+//import ClearJobsForm from "main/components/Jobs/ClearJobsForm";
 import SingleButtonJobForm from "main/components/Jobs/SingleButtonJobForm";
 
 import { useBackendMutation } from "main/utils/useBackend";

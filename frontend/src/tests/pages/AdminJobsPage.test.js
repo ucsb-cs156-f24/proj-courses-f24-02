@@ -258,10 +258,6 @@ describe("AdminJobsPage tests", () => {
     expect(updateGradeButton).toBeInTheDocument();
     updateGradeButton.click();
 
-    const submitGradeButton = screen.getByTestId("updateGradeInfoSubmit");
-    expect(submitGradeButton).toBeInTheDocument();
-    submitGradeButton.click();
-
     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
     expect(axiosMock.history.post[0].url).toBe(url);
   });

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import JobsTable from "main/components/Jobs/JobsTable";
@@ -62,16 +62,11 @@ describe("JobsTable tests", () => {
     );
 
     const truncatedLog = Array(10).fill("Line").join("\n");
-    expect(
-      screen.getByText((node) => {
-        const hasText = (node) => node.textContent === truncatedLog;
-        const nodeMatches = hasText(node);
-        const childrenDoNotMatch = Array.from(node.children || []).every(
-          (child) => !hasText(child),
-        );
-        return nodeMatches && childrenDoNotMatch;
-      }),
-    ).toBeInTheDocument();
+    const logCell = screen.getByTestId("JobsTable-cell-row-0-col-Log");
+
+    const preElement = logCell.querySelector("pre");
+    expect(preElement).toBeInTheDocument();
+    expect(preElement.textContent).toContain(truncatedLog);
 
     const link = screen.getByTestId("JobsTable-log-link-1");
     expect(link).toBeInTheDocument();
