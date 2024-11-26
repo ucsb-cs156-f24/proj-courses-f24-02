@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  screen,
-  waitFor,
-  act,
-  fireEvent,
-} from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter, Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -100,12 +94,14 @@ describe("JobLogPage tests", () => {
       </QueryClientProvider>,
     );
 
-    await waitFor(() => {
-      expect(screen.getByText("ID")).toBeInTheDocument();
-      expect(screen.getByText(job.id.toString())).toBeInTheDocument();
-      expect(screen.getByText("Status")).toBeInTheDocument();
-      expect(screen.getByText(job.status)).toBeInTheDocument();
-    });
+    await waitFor(() => expect(screen.getByText("ID")).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByText(job.id.toString())).toBeInTheDocument(),
+    );
+    await waitFor(() => expect(screen.getByText("Status")).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByText(job.status)).toBeInTheDocument(),
+    );
 
     const logCell = screen.getByTestId("JobLogTable-cell-row-0-col-Log");
     expect(logCell).toBeInTheDocument();
@@ -141,9 +137,7 @@ describe("JobLogPage tests", () => {
     const backButton = screen.getByText("Back");
     expect(backButton).toBeInTheDocument();
 
-    await act(async () => {
-      userEvent.click(backButton);
-    });
+    userEvent.click(backButton);
 
     expect(navigate).toHaveBeenCalledWith(-1);
   });

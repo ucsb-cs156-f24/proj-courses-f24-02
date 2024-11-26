@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import JobsTable from "main/components/Jobs/JobsTable";
@@ -63,7 +63,7 @@ describe("JobsTable tests", () => {
 
     const truncatedLog = Array(10).fill("Line").join("\n");
     expect(
-      screen.getByText((content, node) => {
+      screen.getByText((node) => {
         const hasText = (node) => node.textContent === truncatedLog;
         const nodeMatches = hasText(node);
         const childrenDoNotMatch = Array.from(node.children || []).every(

@@ -308,10 +308,8 @@ describe("AdminJobsPage tests", () => {
 
     fireEvent.click(seeEntireLogLink);
 
-    await waitFor(() => {
-      expect(screen.getByText("ID")).toBeInTheDocument();
-      expect(screen.getByText(job.id)).toBeInTheDocument();
-    });
+    await waitFor(() => expect(screen.getByText("ID")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText(job.id)).toBeInTheDocument());
 
     const logCellInLogPage = screen.getByTestId(
       "JobLogTable-cell-row-0-col-Log",
@@ -322,10 +320,6 @@ describe("AdminJobsPage tests", () => {
     expect(logPre).toBeInTheDocument();
     expect(logPre.textContent).toBe(longLog);
   });
-
-  //test("user can clear jobs", async () => {
-  //const queryClient = new QueryClient();
-  //const axiosMock = new AxiosMockAdapter(axios);
 
   test("user can clear jobs", async () => {
     const url = "/api/jobs/all";
